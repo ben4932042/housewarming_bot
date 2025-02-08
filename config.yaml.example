@@ -1,0 +1,6 @@
+service_name: "housewarming"
+log_level: "INFO"
+
+linebot:
+  channel_access_token: ""
+  channel_secret: ""
