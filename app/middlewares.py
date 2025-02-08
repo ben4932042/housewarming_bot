@@ -3,7 +3,7 @@ import json
 import logging
 
 from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware import Middleware
 from opentelemetry import trace
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
@@ -122,18 +122,3 @@ class AsyncIteratorWrapper:
         except StopIteration:
             raise StopAsyncIteration
         return value
-
-
-def setup_middlewares(app: FastAPI, logger):
-    app.add_middleware(TraceIdMiddleware)
-    app.add_middleware(
-        LoggingMiddleware,
-        logger=logger
-    )
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_methods=["*"],
-        allow_headers=["*"],
-        allow_credentials=True,
-    )
