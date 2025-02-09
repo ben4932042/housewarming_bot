@@ -1,5 +1,5 @@
 import logging
-
+from logging import Logger
 
 from app.settings.config import config
 
@@ -46,5 +46,5 @@ LOGGING_CONFIG = {
 }
 
 
-def setup_logger() -> None:
+def setup_logger() -> Logger:
     return logging.getLogger(__name__)
