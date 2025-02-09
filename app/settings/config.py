@@ -15,6 +15,7 @@ class LineBot(BaseModel):
 class GlobalConfig(BaseSettings):
     service_name: str
     log_level: str
+    gemini_api_key: str
     linebot: LineBot
 
     @validator("log_level")

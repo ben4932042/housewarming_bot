@@ -3,14 +3,14 @@ from logging import Logger
 
 from app.settings.config import config
 
-
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
         "default": {
-            "class": "pythonjsonlogger.jsonlogger.JsonFormatter",
-            "format": "%(asctime)s %(levelname)s %(module)s %(funcName)s %(lineno)s"
+            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+            "format": "%(asctime)s %(name)s %(levelname)s %(pathname)s %(lineno)s %(message)s",
+            "json_ensure_ascii": False,
         },
     },
     "handlers": {
@@ -31,6 +31,7 @@ LOGGING_CONFIG = {
         "uvicorn": {
             "handlers": ["default"],
             "level": "ERROR",
+            "propagate": False,
         },
         "uvicorn.error": {
             "handlers": ["default"],
@@ -42,9 +43,16 @@ LOGGING_CONFIG = {
             "level": "ERROR",
             "propagate": False,
         },
+
+        "opentelemetry.trace": {
+            "handlers": ["default"],
+            "level": "ERROR",
+            "propagate": False,
+        },
     },
 }
 
 
 def setup_logger() -> Logger:
-    return logging.getLogger(__name__)
+    return logging.getLogger()
+

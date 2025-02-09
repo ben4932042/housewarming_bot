@@ -65,7 +65,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         request_logging = {
             "method": request.method,
             "path": path,
-            "ip": request.client.host
+            "ip": request.client.host,
+            "headers": dict(request.headers),
         }
 
         try:

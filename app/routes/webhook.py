@@ -34,4 +34,3 @@ async def webhook_handler(request: Request, x_line_signature: str = Header(None)
         media_type="application/json",
         status_code=status.HTTP_200_OK
     )
-
