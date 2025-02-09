@@ -6,7 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 from app.middlewares import TraceIdMiddleware, LoggingMiddleware
-from app.routes.webhook import webhook_route
+from app.routes.webhook import route as webhook_route
+from app.routes.healthcheck import route as healthcheck_route
 from app.settings.logging import LOGGING_CONFIG, setup_logger
 from app.settings.tracing import setup_tracer
 from app.settings.config import config
@@ -29,16 +30,17 @@ def main() -> FastAPI:
     app = FastAPI(
         title=config.service_name,
         middleware=middleware,
-        docs_url="/api/docs",
         redoc_url=None
     )
 
     FastAPIInstrumentor.instrument_app(app, tracer_provider=setup_tracer())
-    app.include_router(webhook_route)
-
-    @app.get("/healthcheck", status_code=status.HTTP_200_OK)
-    def healthcheck() -> dict:
-        return {"status": "ok"}
+    app.include_router(
+        router=webhook_route,
+        prefix="/api/v1"
+    )
+    app.include_router(
+        router=healthcheck_route,
+    )
 
     return app
 

@@ -8,14 +8,14 @@ from app.dependencies import get_token_header
 line_service = LineBotService()
 logger = logging.getLogger(__name__)
 
-webhook_route = APIRouter(
+route = APIRouter(
     tags=["verifications"],
+    prefix="/linebot",
     dependencies=[Depends(get_token_header)],
-    responses={404: {"description": "Not found"}},
 )
 
 
-@webhook_route.post("/webhook")
+@route.post("/webhook")
 async def webhook_handler(request: Request, x_line_signature: str = Header(None)) -> Response:
     logger.debug("Webhook request received")
     body = await request.body()
@@ -34,3 +34,4 @@ async def webhook_handler(request: Request, x_line_signature: str = Header(None)
         media_type="application/json",
         status_code=status.HTTP_200_OK
     )
+
